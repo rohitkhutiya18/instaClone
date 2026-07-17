@@ -37,7 +37,7 @@ export class AuthService {
 
           this.jwtService.signAsync(payload,{
             secret:this.configService.get("accessTokenSecret"),
-            expiresIn:"60m"
+            expiresIn: 5 *60 *60 * 60 * 60 * 1000
         })])
 
         user.refreshToken = refreshToken

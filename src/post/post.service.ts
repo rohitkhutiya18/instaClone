@@ -40,6 +40,24 @@ export class PostService {
                      return newPost;
   }
 
+
+  async updatePost(updatePostDto : Partial<UpdatePostDto>,userId:string){
+    console.log(updatePostDto)
+       const post = await this.postEntity.findOne({where:{id:updatePostDto.postId},relations:{user:true}})
+       console.log(post)
+
+       if(!post){throw new NotFoundException("Post Not Found")}
+
+       if(post.user.id !== userId){throw new ForbiddenException("forbidden")}
+
+       if(updatePostDto.caption !== undefined){
+        post.caption = updatePostDto.caption
+       }
+
+       return this.postEntity.save(post);
+  }
+
+
   findAll(page:number,limit:number) {
         return this.postEntity.find({
           skip : (page - 1) * limit,
@@ -78,20 +96,6 @@ export class PostService {
   }
 
 
-  async updatePost(updatePostDto : Partial<UpdatePostDto>,userId:string){
-       const post = await this.postEntity.findOne({where:{id:updatePostDto.postId},relations:{user:true}})
-
-       if(!post){throw new NotFoundException("Post Not Found")}
-
-       if(post.user.id !== userId){throw new ForbiddenException("forbidden")}
-
-       if(updatePostDto.caption !== undefined){
-        post.caption = updatePostDto.caption
-       }
-
-       return this.postEntity.save(post);
-  }
-
   async updateImage(postId:string,userId:string,oldImgPublicId:string,newImgUrl:string){
        const post = await this.postEntity.findOne({where:{id:postId},relations:{user:true}})
        console.log("post")
@@ -104,6 +108,7 @@ export class PostService {
 
        const index = post.images.findIndex((val)=>val.publicId === oldImgPublicId);
        console.log(index)
+       
        if(index === -1){throw new NotFoundException("image not found")}
 
        post.images[index] = {

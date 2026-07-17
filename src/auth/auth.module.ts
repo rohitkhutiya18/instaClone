@@ -6,13 +6,13 @@ import { PasswordModule } from 'src/common/password/password.module';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { MailModule } from 'src/mail/mail.module';
-import { JwtGaurd } from './auth.gaurd';
+
 
 @Module({
   imports:[JwtModule.register({
     secret:`${process.env.accessTokenSecret}`,
     signOptions:{
-      expiresIn:"60m"}
+      expiresIn:5 *60 *60 * 60 * 60 * 1000}
   }),UserModule,PasswordModule,MailModule],
   controllers: [AuthController],
   providers: [AuthService,JwtStrategy]

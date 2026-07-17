@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { JwtGaurd } from 'src/auth/auth.gaurd';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
@@ -14,6 +13,7 @@ export class UserController {
 
   @Post('create')
   create(@Body() createUserDto: CreateUserDto) {
+    console.log(createUserDto)
     return this.userService.createUser(createUserDto);
   }
 

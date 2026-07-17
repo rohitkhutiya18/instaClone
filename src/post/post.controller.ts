@@ -13,6 +13,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 export class PostController {
   constructor(private readonly postService: PostService) {}
    
+  // create post 
   @UseGuards(JwtGaurd)
   @Post('create')
   @UseInterceptors(
@@ -35,11 +36,9 @@ export class PostController {
     return this.postService.create(user.id,body,urlArr);
   }
 
-  @Get('user-all-post/:id')
-  findAllPostOfuser(@Param('id') id: string) {
-    return this.postService.findAllPostOfUser(id);
-  }
 
+
+  // update post 
   @Patch('update-post')
   @UseGuards(JwtGaurd)
   updatePost(@Body() updatePostDto: UpdatePostDto,@Req() req : Request) {
@@ -48,6 +47,16 @@ export class PostController {
   }
 
 
+
+  // get post
+  @Get('user-all-post/:id')
+  findAllPostOfuser(@Param('id') id: string) {
+    return this.postService.findAllPostOfUser(id);
+  }
+
+
+
+  // delete post
   @UseGuards(JwtGaurd)
   @Delete('delete-post')
   deletePost(@Body() body:{id:string},@Req() req : Request){
@@ -56,10 +65,11 @@ export class PostController {
            return this.postService.removePost(body.id,user.id);
   }
 
-    @Delete('remove-post-img/:id')
+  // delete post Image
+    @Delete('remove-post-img')
   @UseGuards(JwtGaurd)
-  removePostImage(@Param('id') id: string) {
-    return this.postService.removePostImage(id);
+  removePostImage(@Body() body:{imageId:string}) {
+    return this.postService.removePostImage(body.imageId);
   }
 
   @Patch('update-post-image')
