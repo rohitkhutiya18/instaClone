@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LikeEntity } from './entities/like.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([LikeEntity])],
+  imports: [TypeOrmModule.forFeature([LikeEntity])],
   controllers: [LikeController],
   providers: [LikeService],
 })
