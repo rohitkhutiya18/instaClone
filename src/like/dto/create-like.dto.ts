@@ -4,5 +4,5 @@ import { IsString } from "class-validator";
 export class CreateLikeDto {
     @Transform(({value})=>value.trim())
     @IsString()
-    postId!:string
+    postId!:string;
 }
