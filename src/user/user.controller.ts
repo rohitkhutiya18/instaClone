@@ -13,7 +13,6 @@ export class UserController {
 
   @Post('create')
   create(@Body() createUserDto: CreateUserDto) {
-    console.log(createUserDto)
     return this.userService.createUser(createUserDto);
   }
 
@@ -32,10 +31,6 @@ export class UserController {
     return this.userService.update(id, updateUserDto);
   }
 
-  @Delete('delete/:id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
-  }
 
   @Post('upload/:id')
   @UseInterceptors(
@@ -66,7 +61,6 @@ export class UserController {
       })
     })
   )
-  
   updateProfilePic(@UploadedFile() file : Express.Multer.File, @Param('id') id:string){
              return this.userService.updatePic(file.path,id);
   }

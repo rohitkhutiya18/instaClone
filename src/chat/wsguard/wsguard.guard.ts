@@ -30,7 +30,7 @@ export class WsguardGuard implements CanActivate {
      return true
    } catch (error) {
 
-  console.log("JWT ERROR:", error);
+  console.log("Auth JWT ERROR:", error);
 
   throw new WsException("invalid token");
 

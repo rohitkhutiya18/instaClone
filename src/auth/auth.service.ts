@@ -1,6 +1,7 @@
 import {  Injectable,  UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 import { PasswordService } from 'src/common/password/password.service';
 import { MailService } from 'src/mail/mail.service';
 import { UserService } from 'src/user/user.service';
@@ -89,5 +90,4 @@ export class AuthService {
    async verifyOTP(email:string,otp:number){
     return this.mailService.verifyOTP(email,otp)
    }
-
 }

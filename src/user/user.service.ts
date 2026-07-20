@@ -5,23 +5,32 @@ import { Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
 import {promises as fs} from 'fs'
 import { CloudnaryService } from 'src/cloudnary/cloudnary.service';
+import { find, toArray } from 'rxjs';
+import { RegisteredUserEntity } from './entities/RegisteredUser.entity';
 
 @Injectable()
 export class UserService {
   constructor(@InjectRepository(UserEntity) private userEntity: Repository<UserEntity>,
+  @InjectRepository(RegisteredUserEntity) private registeredUserEntity: Repository<RegisteredUserEntity>,
               private readonly cloudnaryService : CloudnaryService){}
 
   async createUser(createUserDto: CreateUserDto) {
   
-    const user = await this.userEntity.findOne({where:{email:createUserDto.email}})
+    const findEmail = await this.registeredUserEntity.findOne({where:{email:createUserDto.email}})
 
-    if(user){
-      throw new NotAcceptableException("user is already avialable with his email")
+    if(!findEmail){
+       throw new NotAcceptableException("your email is not verified");
     }
 
-    const newUser = this.userEntity.create(createUserDto);
+    const findUser = await this.userEntity.findOne({where:{email:createUserDto.email}})
 
-    return this.userEntity.save(newUser);
+    if(findUser){
+      throw new NotAcceptableException("you already have registered account");
+    }
+
+    const createUser = this.userEntity.create(createUserDto)
+
+    return this.userEntity.save(createUser);
   }
 
   async findAllUsers() {
@@ -61,10 +70,6 @@ export class UserService {
     
     Object.assign(user,updateUserDto);
     return this.userEntity.save(user);
-  }
-
-  remove(id: string) {
-    // return this.userEntity.remove({where:{id}})
   }
 
   

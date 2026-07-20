@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class mailEntity {
@@ -10,4 +10,10 @@ export class mailEntity {
 
      @Column()
      otp!:number;
+
+     @Column({type:'timestamp'})
+     expiresAt!:Date
+
+     @CreateDateColumn()
+     createAt!:Date
 }

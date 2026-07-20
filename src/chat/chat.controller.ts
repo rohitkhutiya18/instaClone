@@ -55,8 +55,7 @@ export class ChatGateWay {
     const senderId = client.user?.id;
     const receiverId = payload.receiverId;
 
-    console.log(senderId);
-    console.log(receiverId);
+
     if (!receiverId) {
       throw new WsException('recever not found');
     }
@@ -69,8 +68,7 @@ export class ChatGateWay {
       );
     }
     const findRecever = this.socketService.getClient(receiverId);
-    console.log(senderId);
-    console.log(findRecever);
+
     if (findRecever) {
       this.server.to(findRecever).emit('newMessage', payload.message);
     }

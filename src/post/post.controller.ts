@@ -27,7 +27,6 @@ export class PostController {
       })
     })
   ) 
-
   create(@Req() req:Request, 
     @Body() body : CreatePostDto,
          @UploadedFiles() files: Express.Multer.File[]) {
@@ -42,6 +41,7 @@ export class PostController {
   @Patch('update-post')
   @UseGuards(JwtGaurd)
   updatePost(@Body() updatePostDto: UpdatePostDto,@Req() req : Request) {
+    console.log('hello world')
     const user = req.user as any
      return this.postService.updatePost( updatePostDto,user.id);
   }
@@ -68,8 +68,11 @@ export class PostController {
   // delete post Image
     @Delete('remove-post-img')
   @UseGuards(JwtGaurd)
-  removePostImage(@Body() body:{imageId:string}) {
-    return this.postService.removePostImage(body.imageId);
+  removePostImage(@Body() body:{postId:string,imageId:string},@Req() req : Request) {
+    
+    const user = req.user as any
+  
+    return this.postService.removePostImage(body.imageId,body.postId,user.id);
   }
 
   @Patch('update-post-image')
@@ -85,7 +88,6 @@ export class PostController {
       })
     })
   )
-  
   updatePostImage(@Body() body:{postId:string,oldImgId:string},@Req() req:Request,@UploadedFile() file:Express.Multer.File){
      const user = req.user as any    
     return this.postService.updateImage(body.postId,user.id,body.oldImgId,file.path);

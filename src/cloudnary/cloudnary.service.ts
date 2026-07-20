@@ -16,9 +16,10 @@ export class CloudnaryService {
         return await cloundnary.uploader.upload(path,{folder:'instaClone'});
     }
 
-    async deleteImageInCloud(publicId:string){
+    async deleteImageInCloud(imagePublicId:string){
+   
         try {
-            const result =  await cloundnary.uploader.destroy(publicId);
+            const result =  await cloundnary.uploader.destroy(imagePublicId);
             
             return result
         } catch (error) {

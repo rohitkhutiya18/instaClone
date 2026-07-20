@@ -20,11 +20,13 @@ export class AuthController {
 
   @Post('/send-otp')
   sendOtp(@Body() body:{email:string}){
+
      return this.authService.sendMailToUser(body.email);
   }
 
   @Post("/verify-otp")
   verifyOtp(@Body() body:{email:string,otp:number}){
+   
          return this.authService.verifyOTP(body.email,body.otp)
   }
 }

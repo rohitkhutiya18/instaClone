@@ -12,6 +12,8 @@ import { PostModule } from './post/post.module';
 import { CloudnaryModule } from './cloudnary/cloudnary.module';
 import { FollowModule } from './follow/follow.module';
 import { ChatModule } from './chat/chat.module';
+import { CommentModule } from './comment/comment.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [UserModule,AuthModule,
@@ -33,7 +35,9 @@ import { ChatModule } from './chat/chat.module';
   PostModule,
   CloudnaryModule,
   FollowModule,
-  ChatModule],
+  ChatModule,
+  CommentModule,
+  LikeModule],
   controllers: [AppController],
   providers: [AppService],
 })
