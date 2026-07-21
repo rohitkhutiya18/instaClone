@@ -1,15 +1,17 @@
 import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { type Request } from 'express';
+import { LoginDTO } from './dto/login.dto';
 
 
-@Controller('auth')
+@Controller('/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() body:{email:string,password:string},@Res({passthrough:true}) res:Response){
-    return this.authService.login(body.email,body.password,res);
+  async login(@Body() body:{data:LoginDTO},@Res({passthrough:true}) res:Response){
+    
+    return this.authService.login(body.data.email,body.data.password,res);
      
   }
 
@@ -20,7 +22,6 @@ export class AuthController {
 
   @Post('/send-otp')
   sendOtp(@Body() body:{email:string}){
-
      return this.authService.sendMailToUser(body.email);
   }
 

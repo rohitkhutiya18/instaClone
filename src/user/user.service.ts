@@ -22,6 +22,8 @@ export class UserService {
        throw new NotAcceptableException("your email is not verified");
     }
 
+    await this.registeredUserEntity.remove(findEmail)
+
     const findUser = await this.userEntity.findOne({where:{email:createUserDto.email}})
 
     if(findUser){

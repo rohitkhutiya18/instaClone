@@ -5,7 +5,6 @@ import { createTransport } from 'nodemailer';
 import { mailEntity } from './enitities/mail.entity';
 import { Repository } from 'typeorm';
 import { randomInt } from 'crypto';
-import { UserEntity } from 'src/user/entities/user.entity';
 import { RegisteredUserEntity } from 'src/user/entities/RegisteredUser.entity';
 
 @Injectable()
