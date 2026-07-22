@@ -22,6 +22,7 @@ export class AuthController {
 
   @Post('/send-otp')
   sendOtp(@Body() body:{email:string}){
+    console.log(body)
      return this.authService.sendMailToUser(body.email);
   }
 

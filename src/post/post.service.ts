@@ -102,7 +102,7 @@ export class PostService {
        if(!post){throw new NotFoundException("post not found")}
 
        if(post.user.id !== userId){throw new ForbiddenException("forbidden")}
-  
+         console.log(newImgUrl)
        const newImage = await this.cloudnaryService.uploadImageInCloud(newImgUrl)
        await fs.unlink(newImgUrl)
 
@@ -123,18 +123,9 @@ export class PostService {
   }
 
 
- async removePostImage(publicId: string,postId:string,userId:string) {
-     const findPost = await this.postEntity.findOne({where:{id:postId},relations:{user:true}});
-  
-     if(findPost?.user.id !== userId){
-      throw new ForbiddenException("forbidden")
-     }
+  removePostImage(publicId: string) {
 
-    const result = await this.cloudnaryService.deleteImageInCloud(publicId)
-  console.log(result)
-    findPost.images = findPost.images.filter((val)=>val.publicId != publicId);
-
-    return this.postEntity.save(findPost);
+    return this.cloudnaryService.deleteImageInCloud(publicId)
   }
 
 }

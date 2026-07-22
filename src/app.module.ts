@@ -15,6 +15,8 @@ import { ChatModule } from './chat/chat.module';
 import { CommentModule } from './comment/comment.module';
 import { LikeModule } from './like/like.module';
 import { SearchModule } from './search/search.module';
+import { SaveModule } from './save/save.module';
+
 
 @Module({
   imports: [UserModule,AuthModule,
@@ -39,7 +41,8 @@ import { SearchModule } from './search/search.module';
   ChatModule,
   CommentModule,
   LikeModule,
-  SearchModule],
+  SearchModule,
+  SaveModule],
   controllers: [AppController],
   providers: [AppService],
 })
