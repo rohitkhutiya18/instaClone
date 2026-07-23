@@ -6,11 +6,17 @@ import { CloudnaryService } from 'src/cloudnary/cloudnary.service';
 import { promises as fs} from 'fs';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { CreatePostDto } from './dto/create-post.dto';
+import { LikeEntity } from 'src/like/entities/like.entity';
+import { SaveEntity } from 'src/save/entities/save.entity';
+import { CommentEntity } from 'src/comment/entities/comment.entity';
 
 @Injectable()
 export class PostService {
   constructor(@InjectRepository(PostEntity) private postEntity : Repository<PostEntity>,
-               private readonly cloudnaryService : CloudnaryService){}
+           @InjectRepository(LikeEntity) private likeEntity : Repository<LikeEntity>,
+           @InjectRepository(SaveEntity) private saveEntity : Repository<SaveEntity>,    
+             @InjectRepository(CommentEntity) private commentEntity: Repository<CommentEntity>,             
+  private readonly cloudnaryService : CloudnaryService){}
  
   
   async create(userId:string,createPostDto:CreatePostDto,files:string[]) {
@@ -126,6 +132,23 @@ export class PostService {
   removePostImage(publicId: string) {
 
     return this.cloudnaryService.deleteImageInCloud(publicId)
+  }
+
+
+  async feedPosts(){
+        const findPostData = await this.postEntity
+        .createQueryBuilder('post')
+        .leftJoin(CommentEntity,'comment','comment.postId = post.id')
+        .leftJoin(LikeEntity,'like','like.postId =  post.id')
+        .select(['post.id','post.caption','post.images','post.createdAt'])
+        .addSelect('count(comment.postId)','postComment')
+        .addSelect('count(like.postId)','postlike')
+        .groupBy("post.id")
+        .addGroupBy('post.caption')
+        .addGroupBy('post.createdAt')
+        .getRawMany()
+
+        return findPostData
   }
 
 }

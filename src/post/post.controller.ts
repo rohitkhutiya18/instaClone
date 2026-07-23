@@ -27,11 +27,10 @@ export class PostController {
       })
     })
   ) 
-
   create(@Req() req:Request, 
     @Body() body : CreatePostDto,
          @UploadedFiles() files: Express.Multer.File[]) {
-          const urlArr = files.map((val)=>val.path)
+                    const urlArr = files?.map((val)=>val.path)
           const user = req.user as any
     return this.postService.create(user.id,body,urlArr);
   }
@@ -52,6 +51,13 @@ export class PostController {
   @Get('user-all-post/:id')
   findAllPostOfuser(@Param('id') id: string) {
     return this.postService.findAllPostOfUser(id);
+  }
+
+  //post on feed 
+  @Get('scroll')
+  homePagePost(){
+    const ans = this.postService.feedPosts()
+    return ans
   }
 
 
